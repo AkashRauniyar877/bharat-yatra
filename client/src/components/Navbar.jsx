@@ -82,10 +82,28 @@ export default function Navbar() {
           
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-11 h-11 rounded-2xl gradient-saffron flex items-center justify-center shadow-md shadow-amber-500/25 group-hover:scale-105 transition-transform duration-300">
-              <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center">
-                <div className="w-2 h-2 rounded-full bg-[#0A192F]"></div>
-              </div>
+            <div className="w-11 h-11 rounded-2xl gradient-saffron flex items-center justify-center shadow-md shadow-amber-500/25 group-hover:scale-105 group-hover:rotate-3 transition-transform duration-300">
+              <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                {/* Location pin */}
+                <path d="M12 22s7-6.5 7-12A7 7 0 0 0 5 10c0 5.5 7 12 7 12Z" fill="white" fillOpacity="0.95" />
+                {/* Ashoka Chakra style wheel */}
+                <circle cx="12" cy="10" r="4.2" fill="none" stroke="#0A192F" strokeWidth="1.1" />
+                <circle cx="12" cy="10" r="1.1" fill="#0A192F" />
+                {Array.from({ length: 8 }).map((_, i) => {
+                  const angle = (i * Math.PI) / 4;
+                  return (
+                    <line
+                      key={i}
+                      x1={12 + Math.cos(angle) * 1.1}
+                      y1={10 + Math.sin(angle) * 1.1}
+                      x2={12 + Math.cos(angle) * 4.2}
+                      y2={10 + Math.sin(angle) * 4.2}
+                      stroke="#0A192F"
+                      strokeWidth="0.7"
+                    />
+                  );
+                })}
+              </svg>
             </div>
             <div className="flex flex-col">
               <span className="text-2xl font-black tracking-tight text-[#0A192F] dark:text-white flex items-center">

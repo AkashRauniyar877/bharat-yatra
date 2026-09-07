@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { MapPin, Sparkles, Heart, Clock, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -25,7 +25,8 @@ const fallbackImageMap = {
 
 export default function DestinationCard({ destination }) {
   const navigate = useNavigate();
-  const { favorites, toggleFavorite } = useAuth();
+  const location = useLocation();
+  const { favorites, toggleFavorite, isAuthenticated } = useAuth();
   const destId = destination.id || destination._id;
   const isFav = favorites.some(fav => String(fav) === String(destination.id) || (destination._id && String(fav) === String(destination._id)));
   const [imgSrc, setImgSrc] = useState(destination.heroImage);
@@ -76,6 +77,10 @@ export default function DestinationCard({ destination }) {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
+            if (!isAuthenticated) {
+              navigate('/login', { state: { from: location.pathname + location.search } });
+              return;
+            }
             toggleFavorite(destId);
           }}
           className={`absolute top-3.5 right-3.5 p-2.5 rounded-full backdrop-blur-md transition-all duration-200 active:scale-90 cursor-pointer shadow-lg ${

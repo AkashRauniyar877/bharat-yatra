@@ -5,6 +5,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
 import Home from './pages/Home';
@@ -32,28 +33,33 @@ export default function App() {
           {/* Main Routing Body */}
           <main className="flex-1">
             <Routes>
+              {/* Public routes — reachable without signing in */}
               <Route path="/" element={<Home />} />
-              <Route path="/explore" element={<ExploreDestinations />} />
-              <Route path="/destination/:id" element={<DestinationDetail />} />
-              <Route path="/ai-planner" element={<AiTripPlanner />} />
-              <Route path="/budget-calculator" element={<BudgetPlannerPage />} />
-              <Route path="/cuisine" element={<CuisineExplorer />} />
-              <Route path="/transport" element={<TransportGuide />} />
-              <Route path="/favorites" element={<FavoritesWishlist />} />
-              <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/login" element={<LoginRegister />} />
-              
+
+              {/* Protected routes — guests are redirected to /login */}
+              <Route path="/explore" element={<ProtectedRoute><ExploreDestinations /></ProtectedRoute>} />
+              <Route path="/destination/:id" element={<ProtectedRoute><DestinationDetail /></ProtectedRoute>} />
+              <Route path="/ai-planner" element={<ProtectedRoute><AiTripPlanner /></ProtectedRoute>} />
+              <Route path="/budget-calculator" element={<ProtectedRoute><BudgetPlannerPage /></ProtectedRoute>} />
+              <Route path="/cuisine" element={<ProtectedRoute><CuisineExplorer /></ProtectedRoute>} />
+              <Route path="/transport" element={<ProtectedRoute><TransportGuide /></ProtectedRoute>} />
+              <Route path="/favorites" element={<ProtectedRoute><FavoritesWishlist /></ProtectedRoute>} />
+              <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+
               {/* Standalone Live Map Route */}
               <Route path="/map" element={
+                <ProtectedRoute>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-6">
                   <div className="text-center max-w-2xl mx-auto">
-                    <h1 className="text-3xl sm:text-4xl font-black text-slate-900">All-India Geographic GIS Explorer</h1>
-                    <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                    <h1 className="text-3xl sm:text-4xl font-black text-[#0A192F] dark:text-white tracking-tight">All-India Geographic GIS Explorer</h1>
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
                       Navigate Indian heritage monuments, beaches, and high-altitude mountain circuits visually.
                     </p>
                   </div>
                   <InteractiveMap />
                 </div>
+                </ProtectedRoute>
               } />
 
               {/* Fallback */}

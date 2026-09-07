@@ -26,7 +26,8 @@ import {
   Compass,
   Eye,
   Navigation,
-  Hotel
+  Hotel,
+  LogIn
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -82,7 +83,7 @@ export default function DestinationDetail() {
   const [loading, setLoading] = useState(true);
   const [heroImg, setHeroImg] = useState('');
   const [selectedGalleryImg, setSelectedGalleryImg] = useState(null);
-  const { user, favorites, toggleFavorite } = useAuth();
+  const { user, favorites, toggleFavorite, isAuthenticated } = useAuth();
 
   // Review form states
   const [newRating, setNewRating] = useState(5);
@@ -191,6 +192,7 @@ export default function DestinationDetail() {
   };
 
   const handleLikeReview = async (revId) => {
+    if (!isAuthenticated) return;
     try {
       await api.likeReview(revId);
       setReviews(prev => prev.map(r => (r._id === revId ? { ...r, likes: (r.likes || 0) + 1 } : r)));
@@ -201,6 +203,7 @@ export default function DestinationDetail() {
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
+    if (!isAuthenticated) return;
     if (!newComment.trim()) return;
 
     setSubmittingReview(true);
@@ -763,7 +766,8 @@ export default function DestinationDetail() {
                 </h3>
               </div>
 
-              {/* Review Submission Form */}
+              {/* Review Submission Form — only for signed-in travelers */}
+              {isAuthenticated ? (
               <form onSubmit={handleReviewSubmit} className="p-5 rounded-2xl bg-amber-50/50 dark:bg-slate-800/60 border border-amber-200 dark:border-slate-700 space-y-4">
                 <h4 className="text-xs font-bold text-amber-900 dark:text-amber-300 uppercase tracking-wider">Leave your travel review:</h4>
                 
@@ -838,6 +842,24 @@ export default function DestinationDetail() {
                   </button>
                 </div>
               </form>
+              ) : (
+                <div className="p-6 rounded-2xl bg-amber-50/50 dark:bg-slate-800/60 border border-amber-200 dark:border-slate-700 text-center space-y-3">
+                  <div className="w-11 h-11 rounded-2xl gradient-saffron flex items-center justify-center mx-auto shadow-md">
+                    <LogIn className="w-5 h-5 text-slate-950" />
+                  </div>
+                  <h4 className="text-sm font-bold text-[#0A192F] dark:text-slate-100">Sign in to share your review</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
+                    Only verified travelers can post reviews. Sign in or create a free account to share your experience.
+                  </p>
+                  <Link
+                    to="/login"
+                    className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl gradient-saffron text-slate-950 font-black text-xs shadow-md hover:opacity-95 transition"
+                  >
+                    <LogIn className="w-3.5 h-3.5" />
+                    <span>Sign In to Write a Review</span>
+                  </Link>
+                </div>
+              )}
 
               {/* Reviews List */}
               <div className="space-y-3">

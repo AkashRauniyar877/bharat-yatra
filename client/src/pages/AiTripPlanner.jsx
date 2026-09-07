@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { 
-  Sparkles, 
-  Clock, 
-  Printer, 
-  Bookmark, 
-  Compass, 
-  CheckCircle2, 
-  Sun, 
-  Sunset, 
-  ShieldCheck, 
+import {
+  Sparkles,
+  Clock,
+  Download,
+  Bookmark,
+  Compass,
+  CheckCircle2,
+  Sun,
+  Sunset,
+  ShieldCheck,
   Utensils
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { destinationsData } from '../data/mockData';
+import { downloadItineraryPDF } from '../utils/itineraryPdf';
 
 export default function AiTripPlanner() {
   const [searchParams] = useSearchParams();
@@ -103,8 +104,8 @@ export default function AiTripPlanner() {
     }
   };
 
-  const handlePrint = () => {
-    window.print();
+  const handleDownloadPDF = () => {
+    downloadItineraryPDF(generatedItinerary);
   };
 
   return (
@@ -274,10 +275,10 @@ export default function AiTripPlanner() {
 
       {/* Generated Itinerary Output */}
       {isGenerating ? (
-        <div className="bg-white rounded-3xl p-12 text-center border border-amber-100 space-y-4">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-12 text-center border border-amber-100 dark:border-slate-800 space-y-4">
           <div className="w-14 h-14 rounded-full border-4 border-amber-500 border-t-transparent animate-spin mx-auto"></div>
-          <h3 className="text-lg font-bold text-[#0A192F]">Crafting Your Personalized Bharat Yatra...</h3>
-          <p className="text-xs text-slate-500 max-w-sm mx-auto">
+          <h3 className="text-lg font-bold text-[#0A192F] dark:text-slate-100">Crafting Your Personalized Bharat Yatra...</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
             Structuring sunrise viewings, authentic culinary meals, and transit buffers tailored for {selectedDestination}.
           </p>
         </div>
@@ -314,11 +315,11 @@ export default function AiTripPlanner() {
               </button>
 
               <button
-                onClick={handlePrint}
+                onClick={handleDownloadPDF}
                 className="flex-1 md:flex-none px-4 py-2.5 rounded-xl bg-[#0A192F] hover:bg-[#020C1B] text-amber-300 text-xs font-bold transition flex items-center justify-center gap-2 shadow-xs cursor-pointer"
               >
-                <Printer className="w-4 h-4" />
-                <span>Print / PDF</span>
+                <Download className="w-4 h-4" />
+                <span>Download PDF</span>
               </button>
             </div>
           </div>

@@ -37,9 +37,10 @@ router.get('/destinations/nearby', getNearbyDestinations);
 // --- Destination CRUD & Detail Routes ---
 router.get('/destinations', getDestinations);
 router.get('/destinations/:id', getDestinationById);
-router.post('/destinations', createDestination);
-router.post('/destinations/ai-generate', generateAIDestination);
-router.delete('/destinations/:id', deleteDestination);
+// Mutating destination routes are restricted to authenticated administrators
+router.post('/destinations', verifyAdmin, createDestination);
+router.post('/destinations/ai-generate', verifyAdmin, generateAIDestination);
+router.delete('/destinations/:id', verifyAdmin, deleteDestination);
 
 // --- Destination Enrichment Sub-Endpoints ---
 router.get('/destinations/:id/images', getDestinationImages);
@@ -47,7 +48,7 @@ router.get('/destinations/:id/weather', getDestinationWeather);
 router.get('/destinations/:id/nearby', getDestinationNearby);
 
 // --- Admin Sync / Force Enrichment Route ---
-router.post('/admin/destinations/:id/enrich', verifyToken, enrichSingleDestination);
+router.post('/admin/destinations/:id/enrich', verifyAdmin, enrichSingleDestination);
 
 // --- AI Planner Routes ---
 router.post('/planner/generate', generateItinerary);
@@ -64,8 +65,9 @@ router.get('/transport', getTransportGuide);
 
 // --- Review Routes ---
 router.get('/reviews/:destinationId', getReviewsByDestination);
-router.post('/reviews', addReview);
-router.put('/reviews/:id/like', likeReview);
+// Posting and liking reviews requires an authenticated account
+router.post('/reviews', verifyToken, addReview);
+router.put('/reviews/:id/like', verifyToken, likeReview);
 
 // --- System Status & Health Check ---
 router.get('/health', (req, res) => {

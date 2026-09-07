@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { User, Lock, Mail, ShieldCheck, Compass, KeyRound } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -16,6 +16,9 @@ export default function LoginRegister() {
 
   const { loginUser, registerUser } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  // Where to send the traveler after auth — back to the page they attempted, else home
+  const redirectTo = location.state?.from || '/';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +34,7 @@ export default function LoginRegister() {
           if (res?.user?.role === 'admin' || role === 'admin') {
             navigate('/admin');
           } else {
-            navigate('/');
+            navigate(redirectTo);
           }
         }, 400);
       } else {
@@ -41,7 +44,7 @@ export default function LoginRegister() {
           if (role === 'admin' || res?.user?.role === 'admin') {
             navigate('/admin');
           } else {
-            navigate('/');
+            navigate(redirectTo);
           }
         }, 400);
       }
@@ -66,9 +69,25 @@ export default function LoginRegister() {
             {role === 'admin' ? (
               <ShieldCheck className="w-7 h-7 text-white" />
             ) : (
-              <div className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center">
-                <div className="w-2 h-2 rounded-full bg-[#0A192F]"></div>
-              </div>
+              <svg viewBox="0 0 24 24" fill="none" className="w-8 h-8" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M12 22s7-6.5 7-12A7 7 0 0 0 5 10c0 5.5 7 12 7 12Z" fill="white" fillOpacity="0.95" />
+                <circle cx="12" cy="10" r="4.2" fill="none" stroke="#0A192F" strokeWidth="1.1" />
+                <circle cx="12" cy="10" r="1.1" fill="#0A192F" />
+                {Array.from({ length: 8 }).map((_, i) => {
+                  const angle = (i * Math.PI) / 4;
+                  return (
+                    <line
+                      key={i}
+                      x1={12 + Math.cos(angle) * 1.1}
+                      y1={10 + Math.sin(angle) * 1.1}
+                      x2={12 + Math.cos(angle) * 4.2}
+                      y2={10 + Math.sin(angle) * 4.2}
+                      stroke="#0A192F"
+                      strokeWidth="0.7"
+                    />
+                  );
+                })}
+              </svg>
             )}
           </div>
           

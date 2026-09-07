@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, RotateCcw, MapPin, Tag, Wallet, ArrowUpDown, Filter } from 'lucide-react';
+import { Search, RotateCcw, MapPin, Tag, Wallet, ArrowUpDown, Compass, Layers } from 'lucide-react';
 import DestinationCard from '../components/DestinationCard';
 import { api } from '../services/api';
 
@@ -9,19 +9,28 @@ export default function ExploreDestinations() {
   const [destinations, setDestinations] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Filter States
+  // Filter States (initialised from URL so filtered views are shareable)
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
-  const [selectedState, setSelectedState] = useState('All');
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [selectedBudget, setSelectedBudget] = useState('All');
-  const [sortBy, setSortBy] = useState('rating');
+  const [debouncedSearch, setDebouncedSearch] = useState(searchParams.get('search') || '');
+  const [selectedState, setSelectedState] = useState(searchParams.get('state') || 'All');
+  const [selectedZone, setSelectedZone] = useState(searchParams.get('zone') || 'All');
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'All');
+  const [selectedBudget, setSelectedBudget] = useState(searchParams.get('budget') || 'All');
+  const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'rating');
+
+  // Debounce the free-text search so we fetch only after the user pauses typing
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(searchTerm), 350);
+    return () => clearTimeout(t);
+  }, [searchTerm]);
 
   useEffect(() => {
     const fetchDestinations = async () => {
       setLoading(true);
       const res = await api.getDestinations({
-        search: searchTerm,
+        search: debouncedSearch,
         state: selectedState,
+        zone: selectedZone,
         category: selectedCategory,
         budget: selectedBudget,
         sort: sortBy
@@ -33,16 +42,41 @@ export default function ExploreDestinations() {
     };
 
     fetchDestinations();
-  }, [searchTerm, selectedState, selectedCategory, selectedBudget, sortBy]);
+  }, [debouncedSearch, selectedState, selectedZone, selectedCategory, selectedBudget, sortBy]);
+
+  // Keep the URL query string in sync with active filters (shareable + back-button friendly)
+  useEffect(() => {
+    const params = {};
+    if (debouncedSearch) params.search = debouncedSearch;
+    if (selectedState !== 'All') params.state = selectedState;
+    if (selectedZone !== 'All') params.zone = selectedZone;
+    if (selectedCategory !== 'All') params.category = selectedCategory;
+    if (selectedBudget !== 'All') params.budget = selectedBudget;
+    if (sortBy !== 'rating') params.sort = sortBy;
+    setSearchParams(params, { replace: true });
+  }, [debouncedSearch, selectedState, selectedZone, selectedCategory, selectedBudget, sortBy, setSearchParams]);
 
   const handleReset = () => {
     setSearchTerm('');
+    setDebouncedSearch('');
     setSelectedState('All');
+    setSelectedZone('All');
     setSelectedCategory('All');
     setSelectedBudget('All');
     setSortBy('rating');
     setSearchParams({});
   };
+
+  const zones = [
+    { value: 'All', label: 'All Zones' },
+    { value: 'North', label: 'North India' },
+    { value: 'South', label: 'South India' },
+    { value: 'East', label: 'East India' },
+    { value: 'West', label: 'West India' },
+    { value: 'North-East', label: 'North-East India' },
+    { value: 'Central', label: 'Central India' }
+  ];
+
 
   const states = [
     'All',
@@ -118,8 +152,8 @@ export default function ExploreDestinations() {
           />
         </div>
 
-        {/* 4 Clean Dropdown Selects Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 pt-2 border-t border-amber-100 dark:border-slate-800">
+        {/* 5 Clean Dropdown Selects Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 pt-2 border-t border-amber-100 dark:border-slate-800">
           
           {/* 1. State / UT Dropdown */}
           <div className="space-y-1">
@@ -141,7 +175,26 @@ export default function ExploreDestinations() {
             </select>
           </div>
 
-          {/* 2. Type / Category Dropdown */}
+          {/* 2. Zone / Region Dropdown */}
+          <div className="space-y-1">
+            <label className="text-[11px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400 flex items-center gap-1">
+              <Layers className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              <span>Region / Zone</span>
+            </label>
+            <select
+              value={selectedZone}
+              onChange={(e) => setSelectedZone(e.target.value)}
+              className="w-full px-3.5 py-3 rounded-xl bg-amber-50/50 dark:bg-slate-800/80 border border-amber-200 dark:border-amber-500/30 text-xs sm:text-sm font-bold text-[#0A192F] dark:text-slate-100 outline-hidden focus:border-amber-500 cursor-pointer"
+            >
+              {zones.map((z) => (
+                <option key={z.value} value={z.value}>
+                  {z.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* 3. Type / Category Dropdown */}
           <div className="space-y-1">
             <label className="text-[11px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400 flex items-center gap-1">
               <Tag className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
@@ -187,7 +240,7 @@ export default function ExploreDestinations() {
                 <ArrowUpDown className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                 <span>Sort Order</span>
               </span>
-              {(searchTerm || selectedState !== 'All' || selectedCategory !== 'All' || selectedBudget !== 'All' || sortBy !== 'rating') && (
+              {(searchTerm || selectedState !== 'All' || selectedZone !== 'All' || selectedCategory !== 'All' || selectedBudget !== 'All' || sortBy !== 'rating') && (
                 <button
                   onClick={handleReset}
                   className="text-[10px] text-amber-600 hover:text-amber-800 dark:text-amber-400 font-bold flex items-center gap-0.5 cursor-pointer underline"
@@ -213,12 +266,17 @@ export default function ExploreDestinations() {
       </div>
 
       {/* Results Header Meta */}
-      <div className="flex items-center justify-between px-2">
-        <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#0A192F] dark:text-slate-200">
+      <div className="flex items-center justify-between px-2 flex-wrap gap-2">
+        <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#0A192F] dark:text-slate-200 flex-wrap">
           <span>Explore Verified Destinations</span>
           {selectedState !== 'All' && (
             <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-300 rounded-md text-xs font-semibold">
               in {selectedState}
+            </span>
+          )}
+          {selectedZone !== 'All' && (
+            <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-300 rounded-md text-xs font-semibold">
+              {selectedZone} Zone
             </span>
           )}
           {selectedCategory !== 'All' && (
@@ -227,6 +285,11 @@ export default function ExploreDestinations() {
             </span>
           )}
         </div>
+        {!loading && (
+          <span className="text-xs font-bold text-amber-700 dark:text-amber-400">
+            {destinations.length} {destinations.length === 1 ? 'destination' : 'destinations'} found
+          </span>
+        )}
       </div>
 
       {/* Grid of Destination Cards */}
