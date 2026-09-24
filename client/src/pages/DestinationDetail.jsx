@@ -337,38 +337,38 @@ export default function DestinationDetail() {
         
         {/* Quick Info & Live Weather Strip */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="p-4 rounded-2xl bg-white border border-amber-900/10 shadow-xs flex items-center gap-3">
-            <div className="p-3 rounded-xl bg-amber-50 text-amber-800">
+          <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-amber-900/10 dark:border-amber-500/20 shadow-xs flex items-center gap-3">
+            <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/80 text-amber-800 dark:text-amber-400">
               <Calendar className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-[10px] uppercase font-bold text-slate-600 block">Best Season</span>
-              <span className="text-xs sm:text-sm font-extrabold text-slate-800">{destination.bestTimeToVisit || 'Oct - March'}</span>
+              <span className="text-[10px] uppercase font-bold text-amber-800 dark:text-amber-400 block">Best Season</span>
+              <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-slate-100">{destination.bestTimeToVisit || 'Oct - March'}</span>
             </div>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-amber-900/10 shadow-xs flex items-center gap-3">
-            <div className="p-3 rounded-xl bg-amber-50 text-amber-800">
+          <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-amber-900/10 dark:border-amber-500/20 shadow-xs flex items-center gap-3">
+            <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/80 text-amber-800 dark:text-amber-400">
               <Clock className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-[10px] uppercase font-bold text-slate-600 block">Ideal Stay</span>
-              <span className="text-xs sm:text-sm font-extrabold text-slate-800">{destination.idealDuration || '2 - 3 Days'}</span>
+              <span className="text-[10px] uppercase font-bold text-amber-800 dark:text-amber-400 block">Ideal Stay</span>
+              <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-slate-100">{destination.idealDuration || '2 - 3 Days'}</span>
             </div>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-amber-900/10 shadow-xs flex items-center gap-3">
-            <div className="p-3 rounded-xl bg-amber-50 text-amber-800">
-              <span className="text-lg font-black text-amber-800">₹</span>
+          <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-amber-900/10 dark:border-amber-500/20 shadow-xs flex items-center gap-3">
+            <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/80 text-amber-800 dark:text-amber-400">
+              <span className="text-lg font-black text-amber-800 dark:text-amber-400">₹</span>
             </div>
             <div>
-              <span className="text-[10px] uppercase font-bold text-slate-600 block">Avg Daily Cost</span>
-              <span className="text-xs sm:text-sm font-extrabold text-slate-800">₹{destination.avgDailyExpense?.toLocaleString('en-IN') || 2000}</span>
+              <span className="text-[10px] uppercase font-bold text-amber-800 dark:text-amber-400 block">Avg Daily Cost</span>
+              <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-slate-100">₹{destination.avgDailyExpense?.toLocaleString('en-IN') || 2000}</span>
             </div>
           </div>
 
           {/* Open-Meteo Live Weather Card */}
-          <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-900 to-[#0A192F] text-white border border-blue-400/20 shadow-xs flex items-center gap-3">
+          <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-900 to-[#0A192F] text-white border border-blue-400/30 shadow-md flex items-center gap-3">
             <div className="p-2.5 rounded-xl bg-white/15 text-yellow-300 backdrop-blur-md text-2xl">
               {weather?.icon || '🌤️'}
             </div>

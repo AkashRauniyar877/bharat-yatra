@@ -6495,28 +6495,28 @@ export const cuisineDatabase = [
       { 
         name: "Awadhi Dum Biryani", 
         type: "Non-Veg/Veg", 
-        image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/9738983/pexels-photo-9738983.jpeg",
         desc: "Slow cooked fragrant long-grain rice infused with saffron, kewra, and tender marinated meat/paneer.", 
         iconicSpot: "Idris Biryani / Tunday Kababi, Lucknow" 
       },
       { 
         name: "Galouti & Kakori Kebab", 
         type: "Non-Veg", 
-        image: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/7340982/pexels-photo-7340982.jpeg",
         desc: "Melt-in-the-mouth kebabs ground with 160 aromatic spices, traditionally created for nawabs.", 
         iconicSpot: "Tunday Kababi, Aminabad, Lucknow" 
       },
       { 
         name: "Banarasi Paan & Malaiyo", 
         type: "Dessert", 
-        image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/1362916/pexels-photo-1362916.jpeg",
         desc: "Digestive betel leaf creation and winter saffron milk froth topped with pistachios.", 
         iconicSpot: "Keshav Paan & Chaukhamba, Varanasi" 
       },
       { 
         name: "Mathura Ke Pede", 
         type: "Sweet", 
-        image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/39478215/pexels-photo-39478215.png",
         desc: "Golden-brown roasted mawa sweets infused with cardamom and dusted with boora sugar.", 
         iconicSpot: "Brijwasi Mithaiwala, Mathura" 
       }
@@ -6529,28 +6529,28 @@ export const cuisineDatabase = [
       { 
         name: "Dal Baati Churma", 
         type: "Vegetarian", 
-        image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/25440306/pexels-photo-25440306.jpeg",
         desc: "Baked wheat dumplings drowned in desi ghee, served with panchmel dal and sweet crushed wheat churma.", 
         iconicSpot: "LMB, Jaipur & Krishna Bati, Udaipur" 
       },
       { 
         name: "Laal Maas", 
         type: "Non-Veg", 
-        image: "https://images.unsplash.com/photo-1545247181-516773cae754?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/6358975/pexels-photo-6358975.jpeg",
         desc: "Royal Rajasthani spicy mutton slow-cooked with potent fiery Mathania red chillies and garlic.", 
         iconicSpot: "Handi, MI Road, Jaipur" 
       },
       { 
         name: "Ghevar (Malai & Plain)", 
         type: "Sweet", 
-        image: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=800&q=80",
+        image: "https://media.istockphoto.com/id/845078516/photo/rajasthani-ghevar-or-ghewar-indian-sweets.jpg?s=1024x1024&w=is&k=20&c=Xp-6UGXOOffvubQq-fKGbG0-1RtjjN9xTzbgem7rl-8=",
         desc: "Porous disc-shaped honeycomb dessert drenched in cardamom syrup and topped with rabdi.", 
         iconicSpot: "Sambhar Fini & LMB, Jaipur" 
       },
       { 
         name: "Pyaaz Kachori & Mirchi Vada", 
         type: "Snack", 
-        image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/5410464/pexels-photo-5410464.jpeg",
         desc: "Crispy savory pastries stuffed with spiced onion and large batter-fried chillies.", 
         iconicSpot: "Rawat Mishthan Bhandar, Jaipur & Jodhpur" 
       }
@@ -6563,14 +6563,14 @@ export const cuisineDatabase = [
       { 
         name: "Mumbai Vada Pav & Misal Pav", 
         type: "Snack", 
-        image: "https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/25916396/pexels-photo-25916396.jpeg",
         desc: "Spicy potato fritter bun and fiery sprouted moth bean curry with farsan and buttered pav.", 
         iconicSpot: "Kirti College & Mamledar Misal, Mumbai" 
       },
       { 
         name: "Puran Poli & Modak", 
         type: "Sweet", 
-        image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/18305749/pexels-photo-18305749.jpeg",
         desc: "Sweet flatbread stuffed with cooked yellow gram and jaggery, plus steamed rice modak.", 
         iconicSpot: "Traditional Maharashtrian Outlets, Pune & Mumbai" 
       }
@@ -6583,21 +6583,21 @@ export const cuisineDatabase = [
       { 
         name: "Amritsari Kulcha with Chole", 
         type: "Vegetarian", 
-        image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/5127333/pexels-photo-5127333.jpeg",
         desc: "Flaky crisp tandoori flatbread stuffed with spiced potatoes/paneer and crushed with butter.", 
         iconicSpot: "Kulwant Singh Kulchian, Amritsar" 
       },
       { 
         name: "Sarson ka Saag & Makki di Roti", 
         type: "Vegetarian", 
-        image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/8625948/pexels-photo-8625948.jpeg",
         desc: "Slow-simmered mustard greens enriched with homemade white butter and jaggery.", 
         iconicSpot: "Kesar Da Dhaba, Amritsar" 
       },
       { 
         name: "Butter Chicken (Murgh Makhani)", 
         type: "Non-Veg", 
-        image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/29684993/pexels-photo-29684993.jpeg",
         desc: "Charcoal grilled tandoori chicken simmered in rich velvety tomato, butter, and cashew gravy.", 
         iconicSpot: "Moti Mahal / Haveli, Jalandhar" 
       }
@@ -6610,14 +6610,14 @@ export const cuisineDatabase = [
       { 
         name: "Mysore Masala Dosa & Mysore Pak", 
         type: "Vegetarian", 
-        image: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/9191935/pexels-photo-9191935.jpeg",
         desc: "Crispy ghee roast dosa with red chili garlic chutney, potato masala and melt-in-mouth gram flour sweet.", 
         iconicSpot: "Mylari & Guru Sweet Mart, Mysuru" 
       },
       { 
         name: "Bisi Bele Bath", 
         type: "Vegetarian", 
-        image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/20422129/pexels-photo-20422129.jpeg",
         desc: "Spiced hot lentil rice with fresh vegetables and generous desi ghee drizzle.", 
         iconicSpot: "MTR / Vidyarthi Bhavan, Bengaluru" 
       }
@@ -6630,14 +6630,14 @@ export const cuisineDatabase = [
       { 
         name: "Chettinad Pepper Chicken & Kari Dosa", 
         type: "Specialty", 
-        image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/35629938/pexels-photo-35629938.jpeg",
         desc: "Fiery freshly ground black pepper curry and thick minced meat layered crispy dosa.", 
         iconicSpot: "The Bangala, Karaikudi & Konar Mess, Madurai" 
       },
       { 
         name: "Thanjavur Rasam & Filter Coffee", 
         type: "Vegetarian", 
-        image: "https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/7125711/pexels-photo-7125711.jpeg",
         desc: "Aromatic pepper-tamarind broth with hot rice, followed by frothy chicory-blended Kumbakonam degree coffee.", 
         iconicSpot: "Kumbakonam Degree Coffee Outlets" 
       }
@@ -6650,14 +6650,14 @@ export const cuisineDatabase = [
       { 
         name: "Kolkata Kathi Roll & Rosogolla", 
         type: "Specialty", 
-        image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/12737663/pexels-photo-12737663.jpeg",
         desc: "Flaky paratha roll stuffed with spiced kebabs and spongy chenna balls soaked in light sugar syrup.", 
         iconicSpot: "Nizam's & K.C. Das, Kolkata" 
       },
       { 
         name: "Shorshe Ilish (Mustard Hilsa)", 
         type: "Non-Veg", 
-        image: "https://images.unsplash.com/photo-1545247181-516773cae754?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/38324319/pexels-photo-38324319.jpeg",
         desc: "Fresh Hilsa fish steamed with pungent freshly ground yellow and black mustard seed paste.", 
         iconicSpot: "6 Ballygunge Place / Oh! Calcutta" 
       }
@@ -6670,16 +6670,56 @@ export const cuisineDatabase = [
       { 
         name: "Goan Fish Curry & Rice", 
         type: "Non-Veg", 
-        image: "https://images.unsplash.com/photo-1545247181-516773cae754?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/35267289/pexels-photo-35267289.jpeg",
         desc: "Tangy coconut milk and kokum infused kingfish curry served with steaming local red rice.", 
         iconicSpot: "Fisherman's Wharf & Ritz Classic, Panaji" 
       },
       { 
         name: "Bebinca & Feni Cocktail", 
         type: "Dessert", 
-        image: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=800&q=80",
+        image: "https://images.pexels.com/photos/8179012/pexels-photo-8179012.jpeg",
         desc: "Traditional 7-layered Indo-Portuguese coconut milk pudding.", 
         iconicSpot: "Martin's Corner, Betalbatim" 
+      }
+    ]
+  },
+  {
+    state: "Gujarat",
+    region: "Kathiawar & Kutch",
+    specialties: [
+      {
+        name: "Khaman Dhokla & Khandvi",
+        type: "Vegetarian",
+        image: "https://images.unsplash.com/photo-1605333396915-47ed6b68a00e?auto=format&fit=crop&w=800&q=80",
+        desc: "Steamed fluffy gram flour cakes tempered with mustard seeds and curry leaves, paired with rolled khandvi.",
+        iconicSpot: "Das Khaman & Iscon Thal, Ahmedabad"
+      },
+      {
+        name: "Kathiyawadi Thali & Undhiyu",
+        type: "Vegetarian",
+        image: "https://images.unsplash.com/photo-1617692855027-33b14f061079?auto=format&fit=crop&w=800&q=80",
+        desc: "Winter vegetable casserole with methi muthiya served alongside bajra rotla and white butter.",
+        iconicSpot: "Agashiye & Vishalla, Ahmedabad"
+      }
+    ]
+  },
+  {
+    state: "Kerala",
+    region: "Malabar & Travancore",
+    specialties: [
+      {
+        name: "Appam with Stew & Karimeen Pollichathu",
+        type: "Specialty",
+        image: "https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=800&q=80",
+        desc: "Lacy fermented rice pancakes with coconut milk stew and pearl spot fish wrapped in banana leaf.",
+        iconicSpot: "Karavalli & Paragon, Kozhikode"
+      },
+      {
+        name: "Kerala Sadya Feast",
+        type: "Vegetarian",
+        image: "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?auto=format&fit=crop&w=800&q=80",
+        desc: "Grand traditional 26-item feast served on banana leaf during festival celebrations.",
+        iconicSpot: "Mothers Veg Plaza, Thiruvananthapuram"
       }
     ]
   }

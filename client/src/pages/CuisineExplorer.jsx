@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { UtensilsCrossed, MapPin, Sparkles } from 'lucide-react';
 import { api } from '../services/api';
 
+const DEFAULT_FOOD_FALLBACK = "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80";
+
 export default function CuisineExplorer() {
   const [cuisines, setCuisines] = useState([]);
   const [selectedState, setSelectedState] = useState('All');
@@ -92,10 +94,11 @@ export default function CuisineExplorer() {
                   {/* Food Image Container */}
                   <div className="relative h-48 w-full overflow-hidden bg-slate-900">
                     <img
-                      src={dish.image || "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80"}
+                      src={dish.image || DEFAULT_FOOD_FALLBACK}
                       alt={dish.name}
                       onError={(e) => {
-                        e.target.src = "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80";
+                        e.target.onerror = null;
+                        e.target.src = DEFAULT_FOOD_FALLBACK;
                       }}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"

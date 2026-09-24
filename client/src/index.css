@@ -79,12 +79,15 @@
 ::-webkit-scrollbar-track {
   background: #fefce8;
 }
+.dark ::-webkit-scrollbar-track {
+  background: #080E1A;
+}
 ::-webkit-scrollbar-thumb {
-  background: #fde68a;
+  background: #d97706;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #fcd34d;
+  background: #f59e0b;
 }
 
 /* Leaflet Map Styling */
@@ -119,17 +122,25 @@
   color: #F8FAFC !important;
 }
 
-.dark .text-slate-900 {
+.dark .text-slate-900,
+.dark .text-slate-800,
+.dark .text-slate-950,
+.dark .text-gray-900,
+.dark .text-gray-800 {
   color: #F8FAFC !important;
 }
 
 .dark .text-slate-700,
-.dark .text-slate-600 {
+.dark .text-slate-600,
+.dark .text-gray-700,
+.dark .text-gray-600 {
   color: #CBD5E1 !important;
 }
 
 .dark .text-slate-500,
-.dark .text-slate-400 {
+.dark .text-slate-400,
+.dark .text-gray-500,
+.dark .text-gray-400 {
   color: #94A3B8 !important;
 }
 
