@@ -39,7 +39,19 @@ const adminSchema = new mongoose.Schema({
   savedItineraries: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Itinerary'
-  }]
+  }],
+  createdBy: {
+    type: String,
+    default: null
+  },
+  createdByName: {
+    type: String,
+    default: null
+  },
+  createdByEmail: {
+    type: String,
+    default: null
+  }
 }, { timestamps: true });
 
 export default mongoose.model('Admin', adminSchema);

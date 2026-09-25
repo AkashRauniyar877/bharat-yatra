@@ -1,6 +1,15 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { register, login, getProfile, toggleFavorite, getFavorites } from '../controllers/authController.js';
+import { 
+  register, 
+  login, 
+  getProfile, 
+  toggleFavorite, 
+  getFavorites,
+  getAllAdmins,
+  createAdminAccount,
+  deleteAdminAccount
+} from '../controllers/authController.js';
 import { 
   getDestinations, 
   getDestinationById, 
@@ -29,6 +38,11 @@ router.post('/auth/login', login);
 router.get('/auth/profile', verifyToken, getProfile);
 router.post('/auth/favorites/toggle', verifyToken, toggleFavorite);
 router.get('/auth/favorites', verifyToken, getFavorites);
+
+// --- Admin Accounts Management Routes ---
+router.get('/admin/users', verifyAdmin, getAllAdmins);
+router.post('/admin/users', verifyAdmin, createAdminAccount);
+router.delete('/admin/users/:id', verifyAdmin, deleteAdminAccount);
 
 // --- Extended External Search & Proximity Discovery Routes ---
 router.get('/destinations/search', searchExternalDestinations);

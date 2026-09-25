@@ -9,7 +9,19 @@ const ADMIN_SECRET = process.env.ADMIN_SECRET_KEY || 'bharat_admin_2026';
 
 // In-memory fallback stores when MongoDB is disconnected
 let inMemoryUsers = [];
-let inMemoryAdmins = [];
+let inMemoryAdmins = [
+  {
+    _id: 'admin-root',
+    name: 'Root Administrator',
+    email: 'admin@bharatyatra.com',
+    role: 'admin',
+    department: 'System Architecture',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+    createdBy: 'system',
+    createdByName: 'System Seed',
+    createdByEmail: 'system@bharatyatra.com'
+  }
+];
 
 export const register = async (req, res) => {
   try {
@@ -51,7 +63,11 @@ export const register = async (req, res) => {
             email: normalizedEmail,
             password: hashedPassword,
             role: 'admin',
-            avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
+            department: req.body.department || 'Tourism Operations',
+            avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+            createdBy: req.user?.id || req.body.createdBy || 'admin-root',
+            createdByName: req.user?.name || req.body.createdByName || 'Administrator',
+            createdByEmail: req.user?.email || req.body.createdByEmail || 'admin@bharatyatra.com'
           });
 
           const token = jwt.sign(
@@ -420,3 +436,190 @@ export const getFavorites = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+/**
+ * Get all registered administrators
+ */
+export const getAllAdmins = async (req, res) => {
+  try {
+    const isDbConnected = mongoose.connection.readyState === 1;
+    let adminsList = [];
+
+    if (isDbConnected) {
+      try {
+        adminsList = await Admin.find().select('-password').sort({ createdAt: -1 });
+      } catch (err) {
+        console.error('⚠️ MongoDB fetch admins error:', err.message);
+      }
+    }
+
+    if (!adminsList || adminsList.length === 0) {
+      adminsList = inMemoryAdmins.map(a => {
+        const { password, ...rest } = a;
+        return rest;
+      });
+    }
+
+    res.json({
+      success: true,
+      count: adminsList.length,
+      data: adminsList
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+/**
+ * Add / Register a new Admin account by a logged-in admin
+ */
+export const createAdminAccount = async (req, res) => {
+  try {
+    const { name, email, password, department } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({ success: false, message: 'Please provide name, email, and password for new admin' });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    const creatorId = req.user?.id || req.body.createdBy || 'admin-root';
+    const creatorName = req.user?.name || req.body.createdByName || 'Administrator';
+    const creatorEmail = req.user?.email || req.body.createdByEmail || 'admin@bharatyatra.com';
+
+    const isDbConnected = mongoose.connection.readyState === 1;
+
+    if (isDbConnected) {
+      const [existingUser, existingAdmin] = await Promise.all([
+        User.findOne({ email: normalizedEmail }),
+        Admin.findOne({ email: normalizedEmail })
+      ]);
+
+      if (existingUser || existingAdmin) {
+        return res.status(400).json({ success: false, message: 'Email is already registered' });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newAdmin = await Admin.create({
+        name: name.trim(),
+        email: normalizedEmail,
+        password: hashedPassword,
+        role: 'admin',
+        department: department || 'Tourism Operations',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+        createdBy: creatorId,
+        createdByName: creatorName,
+        createdByEmail: creatorEmail
+      });
+
+      console.log(`✅ Admin "${creatorName}" created new admin account "${newAdmin.name}" (${newAdmin.email})`);
+
+      return res.status(201).json({
+        success: true,
+        message: `Admin account "${newAdmin.name}" added successfully by ${creatorName}`,
+        data: {
+          _id: newAdmin._id,
+          id: newAdmin._id,
+          name: newAdmin.name,
+          email: newAdmin.email,
+          role: 'admin',
+          department: newAdmin.department,
+          avatar: newAdmin.avatar,
+          createdBy: newAdmin.createdBy,
+          createdByName: newAdmin.createdByName,
+          createdByEmail: newAdmin.createdByEmail,
+          createdAt: newAdmin.createdAt
+        }
+      });
+    }
+
+    // In-memory fallback
+    const exists = inMemoryAdmins.find(a => a.email === normalizedEmail);
+    if (exists) {
+      return res.status(400).json({ success: false, message: 'Email is already registered' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const mockAdmin = {
+      _id: 'admin-' + Date.now(),
+      id: 'admin-' + Date.now(),
+      name: name.trim(),
+      email: normalizedEmail,
+      password: hashedPassword,
+      role: 'admin',
+      department: department || 'Tourism Operations',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+      createdBy: creatorId,
+      createdByName: creatorName,
+      createdByEmail: creatorEmail,
+      createdAt: new Date().toISOString()
+    };
+    inMemoryAdmins.unshift(mockAdmin);
+
+    const { password: _, ...adminData } = mockAdmin;
+    res.status(201).json({
+      success: true,
+      message: `Admin account "${mockAdmin.name}" added successfully by ${creatorName}`,
+      data: adminData
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+/**
+ * Delete an Admin account - STRICTLY ONLY BY THE ADMIN WHO CREATED IT
+ */
+export const deleteAdminAccount = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const requesterId = req.user?.id || req.headers['x-admin-id'];
+    const requesterEmail = req.user?.email || req.headers['x-admin-email'];
+
+    const isDbConnected = mongoose.connection.readyState === 1;
+    let targetAdmin = null;
+
+    if (isDbConnected) {
+      targetAdmin = (mongoose.Types.ObjectId.isValid(id) ? await Admin.findById(id) : null) ||
+                    await Admin.findOne({ _id: id });
+    }
+
+    if (!targetAdmin) {
+      targetAdmin = inMemoryAdmins.find(a => a._id === id || String(a._id) === String(id) || a.id === id);
+    }
+
+    if (!targetAdmin) {
+      return res.status(404).json({ success: false, message: 'Admin account not found' });
+    }
+
+    // STRICT OWNER CHECK: Only the admin who added/created this admin can delete it!
+    const isOwner = (requesterId && targetAdmin.createdBy && String(targetAdmin.createdBy) === String(requesterId)) ||
+                    (requesterEmail && targetAdmin.createdByEmail && targetAdmin.createdByEmail.toLowerCase() === requesterEmail.toLowerCase()) ||
+                    (requesterEmail === 'admin@bharatyatra.com'); // Super root admin bypass
+
+    if (!isOwner) {
+      return res.status(403).json({
+        success: false,
+        message: `Permission Denied: Aap sirf wahi admin delete kar sakte hain jisko aapne add kiya hai. (Added by: ${targetAdmin.createdByName || targetAdmin.createdByEmail || 'System Seed'})`
+      });
+    }
+
+    if (isDbConnected) {
+      try {
+        await Admin.findByIdAndDelete(targetAdmin._id);
+      } catch (err) {
+        console.error('⚠️ MongoDB delete admin error:', err.message);
+      }
+    }
+
+    inMemoryAdmins = inMemoryAdmins.filter(a => String(a._id) !== String(targetAdmin._id) && a.id !== id);
+
+    console.log(`🗑️ Admin account "${targetAdmin.name}" (${targetAdmin.email}) deleted by "${requesterEmail}"`);
+
+    res.json({
+      success: true,
+      message: `Admin account "${targetAdmin.name}" deleted successfully.`
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+

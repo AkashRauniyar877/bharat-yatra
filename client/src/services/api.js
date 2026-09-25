@@ -665,5 +665,119 @@ export const api = {
       }
     }
     return registerLocally(userData);
+  },
+
+  // Admin Accounts Management
+  getAdmins: async () => {
+    if (API_BASE) {
+      try {
+        const res = await apiClient.get('/admin/users');
+        if (res.data && typeof res.data !== 'string' && res.data.success) {
+          return res.data;
+        }
+      } catch (err) {
+        // Fallback
+      }
+    }
+    const localAdmins = JSON.parse(localStorage.getItem('bharat_yatra_admin_accounts') || '[]');
+    if (localAdmins.length === 0) {
+      const defaultAdmin = {
+        id: 'admin-root',
+        _id: 'admin-root',
+        name: 'Root Administrator',
+        email: 'admin@bharatyatra.com',
+        role: 'admin',
+        department: 'System Architecture',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+        createdBy: 'system',
+        createdByName: 'System Seed',
+        createdByEmail: 'system@bharatyatra.com'
+      };
+      localAdmins.push(defaultAdmin);
+      localStorage.setItem('bharat_yatra_admin_accounts', JSON.stringify(localAdmins));
+    }
+    return { success: true, count: localAdmins.length, data: localAdmins };
+  },
+
+  createAdmin: async (adminData) => {
+    if (API_BASE) {
+      try {
+        const res = await apiClient.post('/admin/users', adminData);
+        if (res.data && typeof res.data !== 'string' && res.data.success) {
+          return res.data;
+        }
+      } catch (err) {
+        if (err.response && err.response.data && err.response.data.message) {
+          throw err;
+        }
+      }
+    }
+    const localAdmins = JSON.parse(localStorage.getItem('bharat_yatra_admin_accounts') || '[]');
+    const exists = localAdmins.find(a => a.email.toLowerCase() === adminData.email.toLowerCase());
+    if (exists) {
+      const existErr = new Error('Email is already registered as Admin.');
+      existErr.response = { data: { message: 'Email is already registered as Admin.' } };
+      throw existErr;
+    }
+
+    const newAdminObj = {
+      id: 'admin-' + Date.now(),
+      _id: 'admin-' + Date.now(),
+      name: adminData.name,
+      email: adminData.email.toLowerCase(),
+      role: 'admin',
+      department: adminData.department || 'Tourism Operations',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+      createdBy: adminData.createdBy || 'admin-root',
+      createdByName: adminData.createdByName || 'Administrator',
+      createdByEmail: adminData.createdByEmail || 'admin@bharatyatra.com',
+      createdAt: new Date().toISOString()
+    };
+
+    localAdmins.unshift(newAdminObj);
+    localStorage.setItem('bharat_yatra_admin_accounts', JSON.stringify(localAdmins));
+
+    return {
+      success: true,
+      message: `Admin account "${newAdminObj.name}" added successfully by ${adminData.createdByName || 'You'}`,
+      data: newAdminObj
+    };
+  },
+
+  deleteAdmin: async (adminId, currentUserEmail, currentUserId) => {
+    if (API_BASE) {
+      try {
+        const res = await apiClient.delete(`/admin/users/${adminId}`);
+        if (res.data && typeof res.data !== 'string') {
+          return res.data;
+        }
+      } catch (err) {
+        if (err.response && err.response.data && err.response.data.message) {
+          return err.response.data;
+        }
+      }
+    }
+
+    const localAdmins = JSON.parse(localStorage.getItem('bharat_yatra_admin_accounts') || '[]');
+    const target = localAdmins.find(a => a.id === adminId || a._id === adminId);
+    if (!target) {
+      return { success: false, message: 'Admin account not found' };
+    }
+
+    const isOwner = (currentUserId && target.createdBy && String(target.createdBy) === String(currentUserId)) ||
+                    (currentUserEmail && target.createdByEmail && target.createdByEmail.toLowerCase() === currentUserEmail.toLowerCase()) ||
+                    (currentUserEmail === 'admin@bharatyatra.com');
+
+    if (!isOwner) {
+      return {
+        success: false,
+        message: `Permission Denied: Aap sirf wahi admin delete kar sakte hain jisko aapne add kiya hai. (Added by: ${target.createdByName || target.createdByEmail || 'System Seed'})`
+      };
+    }
+
+    const filtered = localAdmins.filter(a => a.id !== adminId && a._id !== adminId);
+    localStorage.setItem('bharat_yatra_admin_accounts', JSON.stringify(filtered));
+
+    return { success: true, message: `Admin account "${target.name}" deleted successfully.` };
   }
 };
