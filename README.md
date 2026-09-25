@@ -5,15 +5,15 @@
 
 ## 📌 1. Overview & Vision
 
-**Bharat Yatra** is a full-stack tourism and heritage platform dedicated to showcasing the cultural, historical, and geographical diversity of India. The platform integrates **112+ comprehensive monuments and tourist destinations** across all 28 states and union territories, offering AI-assisted day-wise itinerary planning, intelligent budget calculation, real-time weather forecasts, GIS map discovery, and dedicated role-based administrative management.
+**Bharat Yatra** is a state-of-the-art, full-stack Indian tourism and heritage intelligence platform dedicated to showcasing the cultural, historical, and geographical diversity of India. The platform integrates **112+ comprehensive monuments and tourist destinations** across all 28 states and union territories, offering AI-assisted day-wise itinerary planning, intelligent budget calculation, real-time weather forecasts, GIS map discovery, and dedicated role-based administrative management with strict creator ownership protection.
 
 ---
 
 ## 🎯 2. Key Features & Platform Capabilities
 
 ### 🏛️ 1. Comprehensive Indian Monuments Directory (112+ Destinations)
-* **UNESCO World Heritage Sites & Iconic Forts:** Taj Mahal, Red Fort, Amer Fort, Mehrangarh, Jaisalmer, Golconda, etc.
-* **Spiritual & Sacred Circuits:** Varanasi Ghats, Golden Temple, Kedarnath, Somnath, Meenakshi Amman, Konark Sun Temple.
+* **UNESCO World Heritage Sites & Iconic Forts:** Taj Mahal, Red Fort, Amer Fort, Mehrangarh, Jaisalmer, Golconda, Hampi, Konark, etc.
+* **Spiritual & Sacred Circuits:** Varanasi Ghats, Golden Temple, Kedarnath, Somnath, Meenakshi Amman, Mahabodhi.
 * **Caves, Palaces & Natural Wonders:** Ajanta & Ellora Caves, Mysore Palace, Rann of Kutch, Valley of Flowers, Lonar Crater.
 * **Beaches, Wildlife & Hill Stations:** Goa, Andaman, Munnar, Jim Corbett, Kaziranga, Ladakh Pangong Circuit.
 * **Rich Metadata:** GPS coordinates, daily average budgets, ideal duration, best time to visit, regional foods, and transport connectivity.
@@ -27,7 +27,7 @@
 * **Admin Hotel Manager:** Administrators can add, edit, or customize hotel options per destination.
 
 ### 📸 4. High-Definition Verified Tourism Photography
-* **Multi-Tier Visual Archive:** Guaranteed 6+ high-resolution verified photographs for all 112+ monuments from Wikimedia Commons, Archaeological Survey of India (ASI) records, and Incredible India archives.
+* **Multi-Tier Visual Archive:** Guaranteed high-resolution verified photographs for all 112+ monuments from Wikimedia Commons, Archaeological Survey of India (ASI) records, and Incredible India archives.
 * **Interactive Lightbox:** Fullscreen photo preview with photographer credits and creative commons licenses.
 
 ### 🗺️ 5. Advanced GIS Interactive Map (4 Tile Layers)
@@ -45,7 +45,9 @@
 
 ### 👑 8. Role-Based Architecture & Creator-Protected Admin Portal (`/admin`)
 * **Dedicated Collections:** Independent `users` and `admins` database collections in MongoDB Atlas.
-* **Creator-Only Resource Protection:** Administrators can only delete/remove monuments that they personally created.
+* **Strict Creator-Only Deletion Policy:** 
+  - **Destinations Protection:** Only the administrator who created a destination record can delete it.
+  - **Admin Team Protection:** Administrators can register new admin team members. **Only the creator admin who added an admin account can delete that admin account.** Other admins see a locked badge and get a permission denial guard.
 * **Route Protection:** Protected routes restricting platform management strictly to verified administrators (`bharat_admin_2026`).
 
 ---
@@ -82,7 +84,27 @@
 
 ---
 
-## 📁 4. Project Structure
+## 🌐 4. API Endpoints Overview
+
+| Method | Endpoint | Description | Access |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/auth/register` | Register new user or admin account | Public |
+| `POST` | `/api/auth/login` | Authenticate user or admin & return JWT token | Public |
+| `GET` | `/api/auth/profile` | Get current user/admin profile | User / Admin |
+| `GET` | `/api/destinations` | List all 112+ destinations with filters | Public |
+| `GET` | `/api/destinations/:id` | Get detailed destination info with live weather | Public |
+| `POST` | `/api/destinations` | Create new destination record | Admin Only |
+| `POST` | `/api/destinations/ai-generate` | AI Auto-research & generate monument metadata | Admin Only |
+| `DELETE` | `/api/destinations/:id` | Delete destination record *(Creator Only)* | Admin Only |
+| `GET` | `/api/admin/users` | List all registered admin team accounts | Admin Only |
+| `POST` | `/api/admin/users` | Register/Add a new admin team member | Admin Only |
+| `DELETE` | `/api/admin/users/:id` | Delete admin team member *(Creator Only)* | Admin Only |
+| `POST` | `/api/planner/generate` | Generate personalized day-wise AI itinerary | Public |
+| `POST` | `/api/budget/calculate` | Calculate customized travel budget breakdown | Public |
+
+---
+
+## 📁 5. Project Structure
 
 ```
 bharat-yatra/
@@ -103,7 +125,7 @@ bharat-yatra/
 │   │   ├── context/       # AuthContext (Traveler & Admin auth state, favorites)
 │   │   ├── pages/         # Home, Explore, DestinationDetail, AIPlanner, BudgetCalculator,
 │   │   │                  # CuisineGuide, TransportGuide, AdminDashboard, LoginRegister
-│   │   ├── services/      # api.js (Axios API client with JWT interceptor)
+│   │   ├── services/      # api.js (Axios API client with JWT interceptor & local fallbacks)
 │   │   ├── App.jsx        # Routing and theme provider
 │   │   └── index.css      # Indian heritage design system & custom gradients
 │   ├── public/            # Monument static assets & favicons
@@ -115,7 +137,7 @@ bharat-yatra/
 
 ---
 
-## 🚀 5. Getting Started & Installation
+## 🚀 6. Getting Started & Installation
 
 ### 1. Prerequisites
 * **Node.js (v18 or higher)**
@@ -165,14 +187,17 @@ npm run dev
 
 ---
 
-## 🔐 6. Authentication & Roles
+## 🔐 7. Authentication & Security Policies
 
 ### 🧳 Traveler (User) Account
 * Register as **Traveler** to explore monuments, save favorite destinations to wishlist, and generate personalized AI itineraries.
 
-### 🛡️ Administrator Account
+### 🛡️ Administrator Account & Ownership Guard
 * Register as **Admin** using the platform admin passcode (`bharat_admin_2026`).
-* Admins gain access to the **Administrator Control Center (`/admin`)** with live database CRUD operations and external API enrichment triggers.
+* Admins access the **Administrator Control Center (`/admin`)**.
+* **Strict Creator Ownership Policy:**
+  1. **Destinations Deletion:** Only the admin who created a monument can delete it.
+  2. **Admin Team Deletion:** An admin can add new admin team accounts. **Only the creator admin who added an admin can delete that admin.**
 
 ---
 
